@@ -22,12 +22,14 @@ userRouter.post("/", async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt); // encrypt the plain text password, and replace it by the encrypted one in the user object.
 
   await user.save(); // save the user object to the database with the encrypted password.
-  const token = user.generateAuthToken();
+  const token = user.generateAuthToken(); // generate a token to send in the response header.
   res
     .header("x-auth-token", token)
     .send(_.pick(user, ["name", "email", "_id"])); // pick property we want and send the saved user back to the client as a response.
 });
-
+userRouter.get("/", (req, res) => {
+  res.render("register");
+});
 userRouter.get("/login", (req, res) => {
   res.render("login", { message: null, successMes: null });
 });

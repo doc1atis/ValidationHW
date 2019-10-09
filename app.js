@@ -33,7 +33,7 @@ app.use(express.json()); // json
 app.use(logger("dev")); // log request in the console
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-app.use("/api/users", userRouter);
+app.use("/register", userRouter);
 app.use("/api/auth", authRouter);
 app.get("/", (req, res) => {
   res.send("connected to app");
