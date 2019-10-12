@@ -24,7 +24,7 @@ userRouter.post("/", async (req, res) => {
   await user.save(); // save the user object to the database with the encrypted password.
   const token = user.generateAuthToken(); // generate a token to send in the response header.
   res
-    .header("x-auth-token", token)
+    .header("x-auth-token", token) // "tokenName", tokenValue
     .send(_.pick(user, ["name", "email", "_id"])); // pick property we want and send the saved user back to the client as a response.
 });
 userRouter.get("/", (req, res) => {

@@ -1,13 +1,16 @@
-const { User } = require("./models/User");
-const admin = require("./middleware/admin");
-const auth = require("./middleware/auth");
+const { User } = require("./models/User"); // load the User class
+const admin = require("./middleware/admin"); // load the admin middleware
+const auth = require("./middleware/auth"); // load the auth middleware
 const config = require("config"); // configure environment variables settings
 const logger = require("morgan"); // log requests to the console for debugging purpose
 const mongoose = require("mongoose"); // to connect to MongoDB
-const express = require("express");
-const userRouter = require("./routes/user");
-const authRouter = require("./routes/auth");
-const app = express();
+const express = require("express"); // load express
+const userRouter = require("./routes/user"); // load userRouter
+const authRouter = require("./routes/auth"); // load the authRouter
+const app = express(); // create the app object
+// STOP THE APP FROM LOADING IF THE PRIVATEKEY IS NOT DEFINED IN THE ENVIRONMENT VARIABLE
+// "jwtPrivateKey":"APP_jwtPrivateKey" --> this is just a mapping to the env variable Name
+// "APP_jwtPrivateKey" --> this is the env variable Name
 if (!config.get("jwtPrivateKey")) {
   console.log("FATAL ERROR: jwtPrivateKey is not defined...!!!");
   process.exit(1); // 0 means success, anything else means failure
@@ -45,6 +48,7 @@ app.get("/me", auth, async (req, res) => {
 app.post("/genre", auth, (req, res) => {
   res.send("posted genre");
 });
+// ROLE BASED AUTHORIZATION, A VARIABLE DEFINED IN AUTH, WILL BE ACCESSIBLE BY ADMIN
 app.delete("/genre", [auth, admin], async (req, res) => {
   res.send("genre deleted");
 });
